@@ -11,10 +11,7 @@ refs.form.addEventListener('submit', onSubmitForm);
 
 const STORAGE_KEY = 'feedback-form-state';
 
-const formData = {
-  email: '',
-  message: '',
-};
+let formData = {};
 
 pageReloadInfoSave();
 
@@ -22,24 +19,32 @@ function formInfo(e) {
   // if (evt.target.name == 'email') {
   //   formData.email = evt.target.value;
   // }
-
   // if (evt.target.name == 'message') {
   //   formData.message = evt.target.value;
   // }
+
   formData[e.target.name] = e.target.value;
-  const formToString = JSON.stringify(formData);
-  localStorage.setItem(STORAGE_KEY, formToString);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+
+  // let persistedFilters = localStorage.getItem(STORAGE_KEY);
+  // persistedFilters = persistedFilters ? JSON.parse(persistedFilters) : {};
+  // persistedFilters[e.target.name] = e.target.value;
+  // localStorage.setItem(STORAGE_KEY, JSON.stringify(persistedFilters)); // need to get an object from here on submit
 }
 
 function pageReloadInfoSave() {
   const storageInfo = localStorage.getItem(STORAGE_KEY);
-  const storageValueToObj = JSON.parse(storageInfo);
   if (storageInfo) {
-    refs.mailArea.value = storageValueToObj.email;
-    refs.textArea.value = storageValueToObj.message;
+    const storageValueToObj = JSON.parse(storageInfo);
+    Object.entries(storageValueToObj).forEach(([name, value]) => {
+      formData[name] = value;
+      refs.form.elements[name].value = value;
+    });
+    // refs.mailArea.value = storageValueToObj.email;
+    // refs.textArea.value = storageValueToObj.message;
 
-    formData.email = storageValueToObj.email;
-    formData.message = storageValueToObj.message;
+    // formData.email = storageValueToObj.email;
+    // formData.message = storageValueToObj.message;
   }
 }
 
@@ -49,6 +54,8 @@ function onSubmitForm(e) {
   e.currentTarget.reset();
   localStorage.removeItem(STORAGE_KEY);
 
-  formData.email = '';
-  formData.message = '';
+  formData = {};
+
+  // formData.email = '';
+  // formData.message = '';
 }
