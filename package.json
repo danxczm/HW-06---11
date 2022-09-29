@@ -2,14 +2,14 @@
   "name": "parcel-project-template",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://danxczm.github.io/HW-06---11",
+  "homepage": "https://danxczm.github.io/HW-08---11",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /HW-06---11/"
+    "build": "parcel build src/*.html --public-url /HW-08---11/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danxczm/HW-06---11.git"
+    "url": "git+https://github.com/danxczm/HW-08---11.git"
   },
   "keywords": [],
   "author": "danxczm",
