@@ -1,3 +1,6 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
+
 const formEl = document.querySelector('.form');
 
 formEl.addEventListener('submit', getValuesOfForm);
@@ -28,16 +31,18 @@ function createPromise(position, delay) {
 }
 
 function promiseDefine(delay, step, amount) {
+  Loading.standard('зараз як щось почнеться');
+  Loading.remove(delay);
   for (let i = 1; i <= amount; i++) {
-    createPromise(i, delay).then(onSucces).catch(onFailure);
+    createPromise(i, delay).then(onSuccess).catch(onFailure);
     delay += step;
   }
 }
 
-function onSucces({ position, delay }) {
-  console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+function onSuccess({ position, delay }) {
+  Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
 }
 
 function onFailure({ position, delay }) {
-  console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+  Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
 }
