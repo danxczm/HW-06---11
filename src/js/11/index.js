@@ -1,8 +1,8 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// import axios from 'axios';
-
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import PicturesApiService from './get-pictures-API';
-
+let simpleLightBox = new SimpleLightbox('.simple_light_box-js');
 const refs = {
   inputEl: document.querySelector('input'),
   formEl: document.querySelector('.search-form'),
@@ -15,6 +15,7 @@ const picturesApiService = new PicturesApiService();
 function renderPopularOnLoadPage() {
   picturesApiService.fetchPictures().then(data => {
     renderPictures(data);
+    simpleLightBox.refresh();
   });
 }
 
@@ -42,6 +43,7 @@ function onSearch(e) {
     refs.loadMoreButton.classList.remove('is-hidden');
     clearPicturesContainer();
     renderPictures(data);
+    simpleLightBox.refresh();
     if (data.total < 40) {
       refs.loadMoreButton.classList.add('is-hidden');
     }
@@ -62,6 +64,7 @@ function onLoadMore() {
       return data;
     })
     .then(renderPictures);
+  simpleLightBox.refresh();
 }
 
 function renderPictures(data) {
@@ -74,14 +77,14 @@ function renderPictures(data) {
           <b>${user}</b>
         </p>
         <p class="info-item">
-          ❤${likes}</p>
+          ❤ ${likes}</p>
         </p>
         <p class="info-item">
-          ⬇${downloads}
+          ⬇ ${downloads}
         </p>
-				<a href="${largeImageURL}" target="_blank">Download</a>
-      </div>
-      <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
+				<a href="${largeImageURL}" target=”_blank”>Download</a>
+				</div>
+      <a class="simple_light_box-js" href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy"/></a>
 
     </div>
     `
@@ -96,9 +99,7 @@ function clearPicturesContainer() {
 }
 
 let mybutton = document.getElementById('myBtn');
-window.onscroll = function () {
-  scrollFunction();
-};
+window.onscroll = () => scrollFunction();
 function scrollFunction() {
   if (
     document.body.scrollTop > 1000 ||
