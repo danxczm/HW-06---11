@@ -1,15 +1,18 @@
+import PicturesApiService from './get-pictures-API';
+import { topFunction, scrollFunction } from './onTopButton';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import PicturesApiService from './get-pictures-API';
-let simpleLightBox = new SimpleLightbox('.simple_light_box-js');
+
 const refs = {
   inputEl: document.querySelector('input'),
   formEl: document.querySelector('.search-form'),
   containerEl: document.querySelector('.gallery'),
   loadMoreButton: document.querySelector('.load-more'),
+  onTopButton: document.getElementById('myBtn'),
 };
 
+let simpleLightBox = new SimpleLightbox('.simple_light_box-js');
 const picturesApiService = new PicturesApiService();
 
 function renderPopularOnLoadPage() {
@@ -71,7 +74,7 @@ function renderPictures(data) {
   const markup = data.hits
     .map(
       ({ user, webformatURL, largeImageURL, tags, likes, downloads }) =>
-        `<div class="photo-card">
+        `<div class="photo-card ">
       <div class="info">
 			<p class="info-item">
           <b>${user}</b>
@@ -84,7 +87,7 @@ function renderPictures(data) {
         </p>
 				<a href="${largeImageURL}" target=”_blank”>Download</a>
 				</div>
-      <a class="simple_light_box-js" href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy"/></a>
+      <a class="simple_light_box-js" href="${largeImageURL}"><img class="skeleton" src="${webformatURL}" alt="${tags}" loading = 'lazy'/></a>
 
     </div>
     `
@@ -98,21 +101,7 @@ function clearPicturesContainer() {
   refs.inputEl.value = '';
 }
 
-let mybutton = document.getElementById('myBtn');
 window.onscroll = () => scrollFunction();
-function scrollFunction() {
-  if (
-    document.body.scrollTop > 1000 ||
-    document.documentElement.scrollTop > 1000
-  ) {
-    mybutton.style.display = 'block';
-  } else {
-    mybutton.style.display = 'none';
-  }
-}
-mybutton.addEventListener('click', topFunction);
-
-function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
+scrollFunction();
+refs.onTopButton.addEventListener('click', topFunction);
+topFunction();
